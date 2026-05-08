@@ -83,6 +83,8 @@ async function logIn(data) {
         let errorArr = extractErrorMessages(response.data);
         showToastMessage(true, errorArr);
     } else {
+        localStorage.setItem('access_token', response.data.access);
+        localStorage.setItem('refresh_token', response.data.refresh);
         showToastAndRedirect(false, ["Login successful!"], "../video_list/index.html", TOAST_DURATION);
     }
 }

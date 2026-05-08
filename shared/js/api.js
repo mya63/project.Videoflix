@@ -26,6 +26,20 @@ function getFormData(form) {
     return Object.fromEntries(formData.entries());
 }
 
+function getAuthHeaders() {
+    const token = localStorage.getItem('access_token');
+
+    const headers = {
+        'Content-Type': 'application/json',
+    };
+
+    if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    return headers;
+}
+
 /**
  * Sends a POST request to the API with JSON data and CSRF token (if available).
  * @param {string} endpoint - API endpoint to call (relative to API_BASE_URL).
@@ -43,7 +57,7 @@ async function postData(endpoint, data) {
         }
     }
     const headers = {
-        'Content-Type': 'application/json',
+        'Content-Type': getAuthHeaders(),
     };
 
     if (csrfToken) {
@@ -83,9 +97,7 @@ async function getData(uid, token) {
     const endpoint = (uid && token) ? `activate/${uid}/${token}/` : `video/`
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
         method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
+        headers: getAuthHeaders(),
         credentials: 'include',
     });
     return response;
