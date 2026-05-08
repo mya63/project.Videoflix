@@ -56,8 +56,7 @@ async function postData(endpoint, data) {
             csrfToken = csrfCookie.split(';')[0];
         }
     }
-    const headers = {
-        'Content-Type': getAuthHeaders(),
+    const headers = getAuthHeaders();
     };
 
     if (csrfToken) {
@@ -85,7 +84,7 @@ async function postData(endpoint, data) {
             message: errorMessage
         };
     }
-}
+
 
 /**
  * Sends a GET request to the API, optionally with activation parameters.
