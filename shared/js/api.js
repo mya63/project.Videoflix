@@ -56,8 +56,8 @@ async function postData(endpoint, data) {
             csrfToken = csrfCookie.split(';')[0];
         }
     }
+
     const headers = getAuthHeaders();
-    };
 
     if (csrfToken) {
         headers['X-CSRFToken'] = csrfToken;
@@ -70,7 +70,9 @@ async function postData(endpoint, data) {
             credentials: 'include',
             body: JSON.stringify(data)
         });
+
         const responseData = await response.json();
+
         return {
             ok: response.ok,
             status: response.status,
@@ -78,13 +80,14 @@ async function postData(endpoint, data) {
         };
     } catch (error) {
         const errorMessage = getErrorMessage(error);
+
         return {
             ok: false,
             status: 'error',
             message: errorMessage
         };
     }
-
+}
 
 /**
  * Sends a GET request to the API, optionally with activation parameters.
