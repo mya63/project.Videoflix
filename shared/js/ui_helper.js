@@ -6,7 +6,7 @@
  * @param {string} id - The ID of the HTML element to modify.
  */
 function setError(valid, id) {
-    document.getElementById(id).setAttribute("error", valid)
+  document.getElementById(id).setAttribute("error", valid);
 }
 
 /**
@@ -16,18 +16,20 @@ function setError(valid, id) {
  * @param {HTMLImageElement} icon - The eye icon element that was clicked.
  */
 function togglePassword(icon) {
-    const container = icon.closest(".form_group_w_icon_wo_label");
-    const input = container.querySelector("input[type='password'], input[type='text']");
+  const container = icon.closest(".form_group_w_icon_wo_label");
+  const input = container.querySelector(
+    "input[type='password'], input[type='text']",
+  );
 
-    if (input) {
-        if (input.type === "password") {
-            input.type = "text";
-            icon.src = "../../assets/icons/visibility_off.svg";
-        } else {
-            input.type = "password";
-            icon.src = "../../assets/icons/visibility.svg";
-        }
+  if (input) {
+    if (input.type === "password") {
+      input.type = "text";
+      icon.src = "../../assets/icons/visibility_off.svg";
+    } else {
+      input.type = "password";
+      icon.src = "../../assets/icons/visibility.svg";
     }
+  }
 }
 
 /**
@@ -38,21 +40,21 @@ function togglePassword(icon) {
  * @returns {string[]} - A flat array of error messages.
  */
 function extractErrorMessages(errorObject) {
-    let errorMessages = [];
+  let errorMessages = [];
 
-    for (let key in errorObject) {
-        if (errorObject.hasOwnProperty(key)) {
-            const value = errorObject[key];
-            if (typeof value === 'object' && value !== null) {
-                errorMessages = errorMessages.concat(extractErrorMessages(value));
-            } else if (Array.isArray(value)) {
-                errorMessages = errorMessages.concat(value);
-            } else {
-                errorMessages.push(value);
-            }
-        }
+  for (let key in errorObject) {
+    if (errorObject.hasOwnProperty(key)) {
+      const value = errorObject[key];
+      if (typeof value === "object" && value !== null) {
+        errorMessages = errorMessages.concat(extractErrorMessages(value));
+      } else if (Array.isArray(value)) {
+        errorMessages = errorMessages.concat(value);
+      } else {
+        errorMessages.push(value);
+      }
     }
-    return errorMessages;
+  }
+  return errorMessages;
 }
 
 /**
@@ -63,15 +65,15 @@ function extractErrorMessages(errorObject) {
  * @param {string[]} [msg=[]] - Array of messages to display in the toast.
  */
 function showToastMessage(error = true, msg = []) {
-    const toast = document.createElement('div');
-    toast.className = 'toast_msg d_flex_cc_gm';
-    toast.innerHTML = getToastHTML(msg, error);
-    toast.setAttribute('error', error);
-    document.body.appendChild(toast);
+  const toast = document.createElement("div");
+  toast.className = "toast_msg d_flex_cc_gm";
+  toast.innerHTML = getToastHTML(msg, error);
+  toast.setAttribute("error", error);
+  document.body.appendChild(toast);
 
-    setTimeout(() => {
-        toast.remove();
-    }, 3000);
+  setTimeout(() => {
+    toast.remove();
+  }, 3000);
 }
 
 /**
@@ -83,19 +85,21 @@ function showToastMessage(error = true, msg = []) {
  * @returns {string} - The HTML string for the toast content.
  */
 function getToastHTML(msg, error) {
-    let msglist = "";
-    if (msg.length <= 0) {
-        msglist = error ? "<li>An error has occurred</li>" : "<li>That worked!</li>"
-    }
-    for (let i = 0; i < msg.length; i++) {
-        msglist += `<li>${msg[i]}</li>`
-    }
+  let msglist = "";
+  if (msg.length <= 0) {
+    msglist = error
+      ? "<li>An error has occurred</li>"
+      : "<li>That worked!</li>";
+  }
+  for (let i = 0; i < msg.length; i++) {
+    msglist += `<li>${msg[i]}</li>`;
+  }
 
-    const icon = error
-        ? '<img src="/assets/icons/error.svg" alt="Error" width="24" height="24">'
-        : '<img src="/assets/icons/check_circle.svg" alt="Success" width="24" height="24">';
+  const icon = error
+    ? '<img src="../../assets/icons/error.svg" alt="Error" width="24" height="24">'
+    : '<img src="../../assets/icons/check_circle.svg" alt="Success" width="24" height="24">';
 
-    return `<div class="toast_msg_left d_flex_cc_gm">
+  return `<div class="toast_msg_left d_flex_cc_gm">
                 ${icon}
             </div>
             <div class="toast_msg_right">
@@ -104,7 +108,7 @@ function getToastHTML(msg, error) {
                 <ul class="w_full">
                     ${msglist}
                 </ul>
-            </div>`
+            </div>`;
 }
 
 /**
@@ -114,14 +118,14 @@ function getToastHTML(msg, error) {
  * @returns {{uid: string, token: string} | null} - The extracted parameters or null if missing.
  */
 function extractParams() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const uid = urlParams.get('uid');
-    const token = urlParams.get('token');
+  const urlParams = new URLSearchParams(window.location.search);
+  const uid = urlParams.get("uid");
+  const token = urlParams.get("token");
 
-    if (uid && token) {
-        return {uid, token};
-    }
-    return null;
+  if (uid && token) {
+    return { uid, token };
+  }
+  return null;
 }
 
 /**
@@ -133,13 +137,17 @@ function extractParams() {
  * @param {string|null} [redirectUrl=null] - The URL to redirect to after the toast.
  * @param {number} [delay=TOAST_DURATION] - Delay in milliseconds before redirecting.
  */
-function showToastAndRedirect(error = true, msg = [], redirectUrl = null, delay = TOAST_DURATION) {
-    showToastMessage(error, msg);
+function showToastAndRedirect(
+  error = true,
+  msg = [],
+  redirectUrl = null,
+  delay = TOAST_DURATION,
+) {
+  showToastMessage(error, msg);
 
-    if (redirectUrl) {
-        setTimeout(() => {
-            window.location.href = redirectUrl;
-        }, delay);
-    }
+  if (redirectUrl) {
+    setTimeout(() => {
+      window.location.href = redirectUrl;
+    }, delay);
+  }
 }
-
